@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellolist: İstatistikler</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        /* Özel Tailwind renkleri ve genel stil ayarları */
+        :root {
+            --primary: #5b21b6; /* Purple-700 */
+            --secondary: #8b5cf6; /* Purple-500 */
+            --background: #1f2937; /* Gray-800 */
+            --card-bg: #374151; /* Gray-700 */
+            --text-color: #f3f4f6; /* Gray-100 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-color);
+            min-height: 100vh;
+        }
+        /* İstatistik Kartı Stili */
+        .stat-card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            text-align: center;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+        .stat-value {
+            font-size: 2.5rem; /* text-4xl */
+            font-weight: 800; /* font-extrabold */
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-size: 0.875rem; /* text-sm */
+            color: #9ca3af; /* text-gray-400 */
+        }
+    </style>
+</head>
+
+<body>
+    
+    <!-- Header (Tüm Sayfalar İçin Ortak) -->
+    <header class="text-center py-6 border-b-2 border-purple-700 mb-6 sticky top-0 bg-gray-800 z-10">
+        <h1 class="text-4xl font-extrabold text-purple-400">Ellolist</h1>
+        <p class="text-lg text-gray-300">Kişisel Medya Takip Uygulaması</p>
+    </header>
+
+    <!-- İstatistik Paneli -->
+    <div class="p-4 sm:p-6 max-w-4xl mx-auto">
+        
+        <h2 class="text-3xl font-bold text-gray-100 mb-6 text-center">İstatistik Paneli</h2>
+
+        <!-- GENEL İLERLEME KARTLARI (Ekran Görüntüsü 1) -->
+        <h3 class="text-xl font-semibold text-purple-400 mb-4 border-b border-gray-700 pb-2">Genel Durum Özetleri</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="general-stats-panel">
+            <!-- Kartlar buraya JavaScript ile doldurulacak -->
+            
+            <div class="stat-card border-t-4 border-purple-500">
+                <div class="stat-value text-purple-400" id="total-items">0</div>
+                <div class="stat-label">Genel Toplam Öğe</div>
+            </div>
+            
+            <div class="stat-card border-t-4 border-green-500">
+                <div class="stat-value text-green-400" id="total-completed">0</div>
+                <div class="stat-label">Toplam Tamamlanan</div>
+            </div>
+            
+            <div class="stat-card border-t-4 border-yellow-500">
+                <div class="stat-value text-yellow-400" id="total-watching">0</div>
+                <div class="stat-label">Toplam İzleniyor</div>
+            </div>
+            
+            <div class="stat-card border-t-4 border-orange-500">
+                <div class="stat-value text-orange-400" id="total-reading">0</div>
+                <div class="stat-label">Toplam Okunuyor</div>
+            </div>
+
+        </div>
+
+        <!-- NİCEL İLERLEME KARTLARI (Ekran Görüntüsü 2) -->
+        <h3 class="text-xl font-semibold text-purple-400 mb-4 border-b border-gray-700 pb-2">Nicel İlerleme (Mevcut Değerlerin Toplamı)</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="progress-stats-panel">
+            
+            <div class="stat-card border-t-4 border-blue-500">
+                <div class="stat-value text-blue-400" id="total-pages">0</div>
+                <div class="stat-label">Okunan Toplam Sayfa</div>
+            </div>
+            
+            <div class="stat-card border-t-4 border-indigo-500">
+                <div class="stat-value text-indigo-400" id="total-chapters-manga">0</div>
+                <div class="stat-label">Okunan Toplam Cilt/Bölüm (Web/Man)</div>
+            </div>
+            
+            <div class="stat-card border-t-4 border-teal-500">
+                <div class="stat-value text-teal-400" id="total-episodes">0</div>
+                <div class="stat-label">İzlenen Toplam Bölüm/Sezon (Dizi/Anime)</div>
+            </div>
+            
+            <div class="stat-card border-t-4 border-red-500">
+                <div class="stat-value text-red-400" id="total-completed-films">0</div>
+                <div class="stat-label">Tamamlanan Toplam Film</div>
+            </div>
+
+        </div>
+
+        <!-- KATEGORİ BAZLI TAMAMLANMA (Ekran Görüntüsü 3 & 4) -->
+        <h3 class="text-xl font-semibold text-purple-400 mb-4 border-b border-gray-700 pb-2">Kategori Bazlı Tamamlanma Kayıtları</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8" id="category-stats-panel">
+            <!-- Dinamik kategori kartları buraya eklenecek -->
+        </div>
+
+        <!-- Geri Dön Butonu -->
+        <div class="flex justify-center mt-12">
+            <a href="index.html" class="w-full max-w-xs">
+                <button class="bg-gray-700 hover:bg-gray-600 text-gray-300 font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 w-full">
+                    <i class="fas fa-arrow-left mr-2"></i> Geri Dön
+                </button>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Modal ve Toast Alanları (Gerekli) -->
+    <div id="toast-container"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, onSnapshot, collection, query } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        setLogLevel('Debug');
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'ellolist-default';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db, auth, userId;
+        let isAuthReady = false;
+        let allItems = []; // Tüm öğeler bu dizide tutulacak
+
+        const generalStatsPanel = document.getElementById('general-stats-panel');
+        const progressStatsPanel = document.getElementById('progress-stats-panel');
+        const categoryStatsPanel = document.getElementById('category-stats-panel');
+
+        function getCollectionPath() { return `artifacts/${appId}/users/${userId}/mediaItems`; }
+
+        // Firebase başlatma ve kullanıcı yetkilendirme
+        async function initializeFirebase() {
+            if (!firebaseConfig) { 
+                console.error("Firebase config is missing."); 
+                userId = crypto.randomUUID(); 
+                isAuthReady = true; 
+                loadDataAndCalculateStats(); 
+                return; 
+            }
+            
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+
+            onAuthStateChanged(auth, async (user) => {
+                userId = user ? user.uid : crypto.randomUUID();
+                isAuthReady = true;
+                console.log("Authentication ready. User ID:", userId);
+                loadDataAndCalculateStats();
+            });
+
+            try {
+                if (initialAuthToken) { await signInWithCustomToken(auth, initialAuthToken); } 
+                else if (!auth.currentUser) { await signInAnonymously(auth); }
+            } catch (error) { 
+                console.error("Firebase sign-in error:", error); 
+                await signInAnonymously(auth); 
+            }
+        }
+
+        // Verileri Firestore'dan gerçek zamanlı yükleme ve istatistikleri hesaplama
+        function loadDataAndCalculateStats() {
+            if (!isAuthReady || !db) return;
+
+            const itemsCollectionRef = collection(db, getCollectionPath());
+            const q = query(itemsCollectionRef); 
+
+            onSnapshot(q, (snapshot) => {
+                allItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                console.log(`Loaded ${allItems.length} items for statistics.`);
+                calculateAndRenderStats(); 
+            }, (error) => {
+                console.error("Error fetching media items for stats:", error);
+                showToast("Veriler yüklenirken bir hata oluştu.", "error");
+            });
+        }
+        
+        // İstatistikleri hesaplayan ve HTML'e yerleştiren ana fonksiyon
+        function calculateAndRenderStats() {
+            const stats = {
+                totalItems: allItems.length,
+                totalCompleted: allItems.filter(item => item.durum === 'Tamamlandı').length,
+                totalWatching: allItems.filter(item => item.durum === 'İzleniyor').length,
+                totalReading: allItems.filter(item => item.durum === 'Okunuyor').length,
+                
+                // Nicel İlerlemeler (Mevcut Değerlerin Toplamı)
+                pages: 0,
+                chaptersManga: 0,
+                episodes: 0,
+                completedFilms: 0,
+                
+                // Kategori Bazlı Tamamlanan Sayıları
+                completedByCategory: {}
+            };
+
+            const allCategories = ['Kitap', 'Roman', 'Webtoon', 'Manga', 'Film', 'Dizi', 'Anime', 'Müzik', 'Podcast'];
+            allCategories.forEach(cat => stats.completedByCategory[cat] = 0);
+
+
+            allItems.forEach(item => {
+                const current = Number(item.mevcutIlerlemeDegeri) || 0;
+                
+                // Nicel İlerleme Hesaplamaları
+                if (item.ilerlemeBirimi === 'Sayfa') {
+                    stats.pages += current;
+                } else if (item.ilerlemeBirimi === 'Cilt' || item.ilerlemeBirimi === 'Bölüm' && (item.kategori === 'Webtoon' || item.kategori === 'Manga')) {
+                    stats.chaptersManga += current;
+                } else if (item.ilerlemeBirimi === 'Sezon' || item.ilerlemeBirimi === 'Bölüm' && (item.kategori === 'Dizi' || item.kategori === 'Anime')) {
+                    stats.episodes += current;
+                }
+                
+                if (item.kategori === 'Film' && item.durum === 'Tamamlandı') {
+                    stats.completedFilms += 1; // Film için her tamamlanan öğe 1 film demektir.
+                }
+
+                // Kategori Bazlı Tamamlanma Hesaplamaları
+                if (item.durum === 'Tamamlandı' && item.kategori && allCategories.includes(item.kategori)) {
+                    stats.completedByCategory[item.kategori] += 1;
+                }
+            });
+
+            // 1. Genel Durum Özetleri (Güncelleme)
+            document.getElementById('total-items').textContent = stats.totalItems;
+            document.getElementById('total-completed').textContent = stats.totalCompleted;
+            document.getElementById('total-watching').textContent = stats.totalWatching;
+            document.getElementById('total-reading').textContent = stats.totalReading;
+
+            // 2. Nicel İlerleme (Güncelleme)
+            document.getElementById('total-pages').textContent = stats.pages;
+            document.getElementById('total-chapters-manga').textContent = stats.chaptersManga;
+            document.getElementById('total-episodes').textContent = stats.episodes;
+            document.getElementById('total-completed-films').textContent = stats.completedFilms;
+
+            // 3. Kategori Bazlı Tamamlanma (Dinamik Render)
+            categoryStatsPanel.innerHTML = ''; // Paneli temizle
+
+            const categoryLabels = {
+                'Kitap': 'Tamamlanan Kitap',
+                'Roman': 'Tamamlanan Roman',
+                'Webtoon': 'Tamamlanan Webtoon',
+                'Manga': 'Tamamlanan Manga',
+                'Film': 'Tamamlanan Film',
+                'Dizi': 'Tamamlanan Dizi',
+                'Anime': 'Tamamlanan Anime',
+                'Müzik': 'Tamamlanan Müzik',
+                'Podcast': 'Tamamlanan Podcast',
+                // Diğer kategoriler buraya eklenebilir
+            };
+
+            allCategories.forEach(category => {
+                const count = stats.completedByCategory[category] || 0;
+                const cardHtml = `
+                    <div class="stat-card border-t-4 border-gray-500">
+                        <div class="stat-value text-gray-300">${count}</div>
+                        <div class="stat-label">${categoryLabels[category] || category}</div>
+                    </div>
+                `;
+                categoryStatsPanel.innerHTML += cardHtml;
+            });
+        }
+        
+        // Toast Fonksiyonu (Hata Bildirimleri İçin)
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toast-container') || document.body.appendChild(document.createElement('div'));
+            toastContainer.id = 'toast-container';
+            toastContainer.style.cssText = 'position: fixed; top: 1rem; right: 1rem; z-index: 60; max-width: 90%;';
+
+            const toast = document.createElement('div');
+            let bgColor, iconClass;
+            switch (type) { case 'success': bgColor = 'bg-green-500'; iconClass = 'fas fa-check-circle'; break; case 'error': bgColor = 'bg-red-500'; iconClass = 'fas fa-exclamation-triangle'; break; case 'info': default: bgColor = 'bg-blue-500'; iconClass = 'fas fa-info-circle'; break; }
+
+            toast.className = `p-4 rounded-lg shadow-xl mb-3 flex items-center text-white ${bgColor} transform translate-x-full opacity-0 transition duration-300`;
+            toast.innerHTML = `<i class="${iconClass} mr-3"></i> <span>${message}</span>`;
+            
+            toastContainer.appendChild(toast);
+            setTimeout(() => { toast.style.transform = 'translate-x-0'; toast.style.opacity = 1; }, 10);
+            setTimeout(() => { toast.style.transform = 'translate-x-full'; toast.style.opacity = 0; toast.addEventListener('transitionend', () => toast.remove()); }, 4000);
+        }
+
+        // Başlangıç
+        window.onload = initializeFirebase;
+    </script>
+</body>
+</html>
+
+

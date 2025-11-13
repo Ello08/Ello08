@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+
+<html lang="tr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title id="page-title">Yeni Öğe Ekle</title>
+
+    <!-- Tailwind CSS CDN -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome CDN -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <style>
+
+        /* Özel Tailwind renkleri ve genel stil ayarları */
+
+        :root {
+
+            --primary: #5b21b6; /* Purple-700 */
+
+            --secondary: #8b5cf6; /* Purple-500 */
+
+            --background: #1f2937; /* Gray-800 */
+
+            --card-bg: #374151; /* Gray-700 */
+
+            --text-color: #f3f4f6; /* Gray-100 */
+
+        }
+
+        body {
+
+            font-family: 'Inter', sans-serif;
+
+            background-color: var(--background);
+
+            color: var(--text-color);
+
+            min-height: 100vh;
+
+        }
+
+        /* Puanlama Yıldız Rengi */
+
+        .rating input:checked ~ label,
+
+        .rating label:hover,
+
+        .rating label:hover ~ label {
+
+            color: #facc15; /* Yellow-400 */
+
+        }
+
+        /* Toast Bildirimi Stili */
+
+        #toast-container {
+
+            position: fixed;
+
+            top: 1rem;
+
+            right: 1rem;
+
+            z-index: 60;
+
+            max-width: 90%;
+
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    
+
+    <!-- Header (Tüm Sayfalar İçin Ortak) -->
+
+    <header class="text-center py-6 border-b-2 border-purple-700 mb-6 sticky top-0 bg-gray-800 z-10">
+
+        <h1 class="text-4xl font-extrabold text-purple-400">Ellolist</h1>
+
+        <p class="text-lg text-gray-300">Kişisel Medya Takip Uygulaması</p>
+
+    </header>
+
+    <!-- Medya Ekle/Düzenle Görünümü -->
+
+    <div class="p-4 sm:p-6">
+
+        <div class="bg-gray-800 rounded-xl shadow-2xl w-full max-w-lg mx-auto my-8 overflow-y-auto">
+
+            <div class="p-6">
+
+                <h2 id="modal-title" class="text-2xl font-bold text-purple-400 mb-4">Yeni Öğe Ekle</h2>
+
+                <form id="item-form" class="space-y-4">
+
+                    <input type="hidden" id="item-id">
+
+                    <input type="hidden" id="creation-date">
+
+                    <!-- Başlık -->
+
+                    <div>
+
+                        <label for="baslik" class="block text-sm font-medium text-gray-300">Başlık *</label>
+
+                        <input type="text" id="baslik" required class="mt-1 block w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
+
+                    </div>
+
+                    <!-- Kategori ve Durum -->
+
+                    <div class="flex gap-4">
+
+                        <div class="w-1/2">
+
+                            <label for="kategori" class="block text-sm font-medium text-gray-300">Kategori *</label>
+
+                            <select id="kategori" required class="mt-1 block w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
+
+                                <option value="Kitap">Kitap</option>
+
+                                <option value="Roman">Roman</option>
+
+                                <option value="Webtoon">Webtoon</option>
+
+                                <option value="Manga">Manga</option>
+
+                                <option value="Film">Film</option>
+
+                                <option value="Dizi">Dizi</option>
+
+                                <option value="Anime">Anime</option>
+
+                                <option value="Müzik">Müzik</option>
+
+                                <option value="Podcast">Podcast</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="w-1/2">
+
+                            <label for="durum" class="block text-sm font-medium text-gray-300">Durum *</label>
+
+                            <select id="durum" required class="mt-1 block w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
+
+                                <option value="İzleniyor">İzleniyor</option>
+
+                                <option value="Okunuyor">Okunuyor</option>
+
+                                <option value="Tamamlandı">Tamamlandı</option>
+
+                                <option value="Planlandı">Planlandı</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Yazar/Yayıncı ve Tür -->
+
+                    <div class="flex gap-4">
+
+                        <div class="w-1/2">
+
+                            <label for="yayinYazar" class="block text-sm font-medium text-gray-300">Yazar/Yayıncı (Ops.)</label>
+
+                            <input type="text" id="yayinYazar" class="mt-1 block w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
+
+                        </div>
+
+                        <div class="w-1/2">
+
+                            <label for="tur" class="block text-sm font-medium text-gray-300">Tür *</label>
+
+                            <!-- Otomatik Tür Bulma Butonu -->
+
+                            <div class="flex mt-1">
+
+                                <select id="tur" required class="block w-full p-3 bg-gray-700 border border-gray-600 rounded-l-lg text-white">
+
+                                    <option value="Fantezi">Fantezi</option>
+
+                                    <option value="Bilim Kurgu">Bilim Kurgu</option>
+
+                                    <option value="Dram">Dram</option>
+
+                                    <option value="Komedi">Komedi</option>
+
+                                    <option value="Aksiyon">Aksiyon</option>
+
+                                    <option value="Gerilim">Gerilim</option>
+
+                                    <option value="Belgesel">Belgesel</option>
+
+                                    <option value="Biyografi">Biyografi</option>
+
+                                    <option value="Diğer">Diğer</option>
+
+                                </select>
+
+                                <button type="button" id="auto-genre-btn" class="flex-shrink-0 bg-purple-500 hover:bg-purple-600 text-white p-3 rounded-r-lg border border-purple-600 border-l-0" title="Otomatik Tür Bul">
+
+                                    <i class="fas fa-tag"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    
+
+                    <!-- Harici Bağlantı ve Hedef Tarihi -->
+
+                    <div class="flex gap-4">
+
+                        <div class="w-1/2">
+
+                            <label for="hariciBaglanti" class="block text-sm font-medium text-gray-300">Harici Bağlantı (URL)</label>
+
+                            <input type="url" id="hariciBaglanti" placeholder="https://..." class="mt-1 block w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
+
+                        </div>
+
+                         <div class="w-1/2">
+
+                            <label for="hedefTarihi" class="block text-sm font-medium text-gray-300">Hedef Tamamlanma Tarihi</label>
+
+                            <input type="date" id="hedefTarihi" class="mt-1 block w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
+
+                        </div>
+
+                    </div>
+
+                    <!-- Otomatik Açıklama Alanı (Yeni) -->
+
+                    <div>
+
+                        <label for="aciklama" class="block text-sm font-medium text-gray-300">Açıklama / Özet</label>
+
+                        <div class="flex mt-1">
+
+                            <textarea id="aciklama" rows="3" class="block w-full p-3 bg-gray-700 border border-gray-600 rounded-l-lg text-white"></textarea>
+
+                            <button type="button" id="auto-description-btn" class="flex-shrink-0 bg-indigo-500 hover:bg-indigo-600 text-white p-3 rounded-r-lg border border-indigo-600 border-l-0" title="Otomatik Açıklama Bul">
+
+                                <i class="fas fa-book-open"></i>
+
+                            </button>
+
+                        </div>
+
+                        <p class="text-xs text-gray-400 mt-1">Otomatik açıklama, Başlık ve Kategoriye göre internetten özet bulur.</p>
+
+                    </div>
+
+                    <!-- İlerleme Alanları (Grup) -->
+
+                    <fieldset class="border border-purple-600 p-3 rounded-lg space-y-3">
+
+                        <legend class="text-md font-semibold text-purple-400 px-2">Aşamalı İlerleme Bilgileri (Opsiyonel)</legend>
+
+                        <div class="flex gap-4">
+
+                            <div class="w-1/2">
+
+                                <label for="mevcutIlerlemeDegeri" class="block text-sm font-medium text-gray-300">Mevcut İlerleme Değeri</label>
+
+                                <input type="number" id="mevcutIlerlemeDegeri" min="0" value="0" class="mt-1 block w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
+
+                            </div>
+
+                            <div class="w-1/2">
+
+                                <label for="toplamIlerlemeDegeri" class="block text-sm font-medium text-gray-300">Toplam İlerleme Değeri</label>
+
+                                <input type="number" id="toplamIlerlemeDegeri" min="0" value="0" class="mt-1 block w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
+
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <label for="ilerlemeBirimi" class="block text-sm font-medium text-gray-300">İlerleme Birimi</label>
+
+                            <select id="ilerlemeBirimi" class="mt-1 block w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white">
+
+                                <option value="Bölüm">Bölüm</option>
+
+                                <option value="Sayfa">Sayfa</option>
+
+                                <option value="Sezon">Sezon</option>
+
+                                <option value="Cilt">Cilt</option>
+
+                                <option value="Film">Film</option>
+
+                                <option value="Kitap">Kitap</option>
+
+                                <option value="Dakika">Dakika</option>
+
+                            </select>
+
+                        </div>
+
+                    </fieldset>
+
+                    <!-- Puanlama -->
+
+                    <div>
+
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Puanlama (1-5)</label>
+
+                        <div id="puanlama" class="rating flex flex-row-reverse justify-end text-3xl text-gray-500">
+
+                            <!-- 5 Yıldız (HTML ile puanlama sistemi) -->
+
+                            <input id="rating-5" type="radio" name="rating" value="5" class="hidden">
+
+                            <label for="rating-5" class="cursor-pointer hover:text-yellow-400"><i class="fas fa-star"></i></label>
+
+                            <input id="rating-4" type="radio" name="rating" value="4" class="hidden">
+
+                            <label for="rating-4" class="cursor-pointer hover:text-yellow-400"><i class="fas fa-star"></i></label>
+
+                            <input id="rating-3" type="radio" name="rating" value="3" class="hidden">
+
+                            <label for="rating-3" class="cursor-pointer hover:text-yellow-400"><i class="fas fa-star"></i></label>
+
+                            <input id="rating-2" type="radio" name="rating" value="2" class="hidden">
+
+                            <label for="rating-2" class="cursor-pointer hover:text-yellow-400"><i class="fas fa-star"></i></label>
+
+                            <input id="rating-1" type="radio" name="rating" value="1" class="hidden">
+
+                            <label for="rating-1" class="cursor-pointer hover:text-yellow-400"><i class="fas fa-star"></i></label>
+
+                        </div>
+
+                    </div>
+
+                    
+
+                    <!-- Küçük Resim (Base64) -->
+
+                    <div>
+
+                        <label for="kucukResimFile" class="block text-sm font-medium text-gray-300">Küçük Resim (Opsiyonel)</label>
+
+                        <input type="file" id="kucukResimFile" accept="image/*" class="mt-1 block w-full text-sm text-gray-400
+
+                            file:mr-4 file:py-2 file:px-4
+
+                            file:rounded-full file:border-0
+
+                            file:text-sm file:font-semibold
+
+                            file:bg-purple-500 file:text-white
+
+                            hover:file:bg-purple-600">
+
+                        <input type="hidden" id="kucukResim">
+
+                        <div id="thumbnail-preview" class="mt-2 text-center"></div>
+
+                    </div>
+
+                    <!-- Notlar (Opsiyonel Notlar) -->
+
+                    <div>
+
+                        <label for="notlar" class="block text-sm font-medium text-gray-300">Kişisel Notlar</label>
+
+                        <textarea id="notlar" rows="3" class="mt-1 block w-full p-3 bg-gray-700 border border-gray-600 rounded-lg text-white"></textarea>
+
+                    </div>
+
+                    <!-- Aksiyon Düğmeleri -->
+
+                    <div class="flex justify-between pt-4">
+
+                        <!-- Geri Dön Butonu -->
+
+                        <!-- HTML linki kaldırıldı, sadece JavaScript yönlendirme kullanılıyor -->
+
+                        <button type="button" onclick="window.location.href = 'index.html';" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300">
+
+                            <i class="fas fa-arrow-left mr-1"></i> Geri
+
+                        </button>
+
+                        <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300">
+
+                            <i class="fas fa-save mr-1"></i> Kaydet
+
+                        </button>
+
+                    </div>
+
+                    
+
+                    <!-- Silme Butonu (Sadece Düzenleme Modunda) -->
+
+                    <div id="delete-container" class="pt-2 hidden">
+
+                        <button type="button" id="delete-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-300 w-full">
+
+                            <i class="fas fa-trash-alt mr-1"></i> Öğeyi Sil
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Toast Alanı -->
+
+    <div id="toast-container"></div>
+
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        
+
+        setLogLevel('Debug');
+
+        const apiKey = ""; // Gemini API Key (Canvas tarafından sağlanacak)
+
+        const geminiApiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=" + apiKey;
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'ellolist-default';
+
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db, auth, userId;
+
+        let isAuthReady = false;
+
+        let currentItemId = new URLSearchParams(window.location.search).get('id');
+
+        // Form elementleri
+
+        const form = document.getElementById('item-form');
+
+        const modalTitle = document.getElementById('modal-title');
+
+        const pageTitle = document.getElementById('page-title');
+
+        const deleteContainer = document.getElementById('delete-container');
+
+        const deleteButton = document.getElementById('delete-btn');
+
+        const thumbnailPreview = document.getElementById('thumbnail-preview');
+
+        const kucukResimFile = document.getElementById('kucukResimFile');
+
+        const autoDescriptionBtn = document.getElementById('auto-description-btn');
+
+        const autoGenreBtn = document.getElementById('auto-genre-btn');
+
+        const baslikInput = document.getElementById('baslik');
+
+        const kategoriSelect = document.getElementById('kategori');
+
+        const aciklamaTextarea = document.getElementById('aciklama');
+
+        const turSelect = document.getElementById('tur');
+
+        function getCollectionPath() { return `artifacts/${appId}/users/${userId}/mediaItems`; }
+
+        function getDocumentRef(id) { return doc(db, getCollectionPath(), id); }
+
+        // Firebase başlatma ve kullanıcı yetkilendirme
+
+        async function initializeFirebase() {
+
+            if (!firebaseConfig) { console.error("Firebase config is missing."); userId = crypto.randomUUID(); isAuthReady = true; setupForm(); return; }
+
+            
+
+            const app = initializeApp(firebaseConfig);
+
+            db = getFirestore(app);
+
+            auth = getAuth(app);
+
+            onAuthStateChanged(auth, async (user) => {
+
+                userId = user ? user.uid : crypto.randomUUID();
+
+                isAuthReady = true;
+
+                console.log("Authentication ready. User ID:", userId);
+
+                setupForm();
+
+            });
+
+            try {
+
+                if (initialAuthToken) { await signInWithCustomToken(auth, initialAuthToken); } 
+
+                else if (!auth.currentUser) { await signInAnonymously(auth); }
+
+            } catch (error) { console.error("Firebase sign-in error:", error); await signInAnonymously(auth); }
+
+        }
+
+        // Formu Ayarlama (Ekleme veya Düzenleme)
+
+        async function setupForm() {
+
+            if (currentItemId) {
+
+                modalTitle.textContent = 'Öğe Düzenle';
+
+                pageTitle.textContent = 'Öğe Düzenle';
+
+                deleteContainer.classList.remove('hidden');
+
+                await loadItemForEdit(currentItemId);
+
+            } else {
+
+                modalTitle.textContent = 'Yeni Öğe Ekle';
+
+                pageTitle.textContent = 'Yeni Öğe Ekle';
+
+                deleteContainer.classList.add('hidden');
+
+            }
+
+        }
+
+        
+
+        // Düzenleme için öğe yükleme
+
+        async function loadItemForEdit(id) {
+
+            if (!isAuthReady || !db) return;
+
+            try {
+
+                const itemDoc = await getDoc(getDocumentRef(id));
+
+                if (itemDoc.exists()) {
+
+                    const item = itemDoc.data();
+
+                    // Form alanlarını doldur
+
+                    document.getElementById('item-id').value = id;
+
+                    document.getElementById('creation-date').value = item.creationDate || new Date().toISOString();
+
+                    document.getElementById('baslik').value = item.baslik || '';
+
+                    document.getElementById('kategori').value = item.kategori || 'Kitap';
+
+                    document.getElementById('durum').value = item.durum || 'Planlandı';
+
+                    document.getElementById('yayinYazar').value = item.yayinYazar || '';
+
+                    document.getElementById('tur').value = item.tur || 'Diğer';
+
+                    document.getElementById('hariciBaglanti').value = item.hariciBaglanti || '';
+
+                    document.getElementById('hedefTarihi').value = item.hedefTarihi || '';
+
+                    document.getElementById('aciklama').value = item.aciklama || '';
+
+                    document.getElementById('mevcutIlerlemeDegeri').value = item.mevcutIlerlemeDegeri || 0;
+
+                    document.getElementById('toplamIlerlemeDegeri').value = item.toplamIlerlemeDegeri || 0;
+
+                    document.getElementById('ilerlemeBi
