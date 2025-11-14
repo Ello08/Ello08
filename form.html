@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellolist - Öğe Ekle/Düzenle</title>
+    
+    <!-- İkonlar ve Fontlar -->
+    <link rel="stylesheet" href="https.cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https.fonts.googleapis.com">
+    <link rel="preconnect" href="https.fonts.gstatic.com" crossorigin>
+    <link href="https.fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Paylaşılan Stiller (Mavi Tema) -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- =================================== -->
+    <!-- ===== EKRAN 2: FORM (EKLE/DÜZENLE) ==== -->
+    <!-- =================================== -->
+    <div class="container">
+        <div class="form-header">
+            <!-- Bu artık <a> etiketi ile gerçek bir link -->
+            <a href="index.html" class="btn-link"><i class="fas fa-arrow-left"></i> Listeye Dön</a>
+            <span class="appwrite-placeholder">Appwrite Bağlantısı Kuruluyor...</span>
+        </div>
+        
+        <h2 id="formTitle">Yeni Öğe Ekle</h2>
+        
+        <form id="mediaForm">
+            <!-- Gizli alanlar -->
+            <input type="hidden" id="formItemId">
+            <input type="hidden" id="formThumbnailData">
+            
+            <!-- Temel Bilgiler -->
+            <div class="form-section">
+                <h3><i class="fas fa-info-circle"></i> Temel Bilgiler</h3>
+                <div class="form-group">
+                    <label for="formBaslik">Başlık (Zorunlu)</label>
+                    <input type="text" id="formBaslik" required>
+                </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="formKategori">Kategori (Zorunlu)</label>
+                        <select id="formKategori" required>
+                            <option value="">Seçiniz...</option>
+                            <!-- JS ile doldurulacak -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="formDurum">Durum (Zorunlu)</label>
+                        <select id="formDurum" required>
+                            <option value="">Seçiniz...</option>
+                            <!-- JS ile doldurulacak -->
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="formYazar">Yayıncı/Yazar/Yönetmen</label>
+                    <input type="text" id="formYazar" placeholder="Örn: J.R.R. Tolkien">
+                </div>
+                <div class="form-group">
+                    <label for="formTur">Tür (Genre)</label>
+                    <input type="text" id="formTur" placeholder="Örn: Fantastik, Bilim Kurgu">
+                </div>
+                <div class="form-group">
+                    <label for="formAciklama">Açıklama/Özet</label>
+                    <textarea id="formAciklama" rows="3"></textarea>
+                </div>
+            </div>
+            
+            <!-- İlerleme ve Değerlendirme -->
+            <div class="form-section">
+                <h3><i class="fas fa-tasks"></i> İlerleme ve Değerlendirme</h3>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="formMevcutIlerleme">Mevcut İlerleme</label>
+                        <input type="number" id="formMevcutIlerleme" value="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="formToplamDeger">Toplam Değer</label>
+                        <input type="number" id="formToplamDeger" value="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="formIlerlemeBirimi">İlerleme Birimi</label>
+                        <select id="formIlerlemeBirimi">
+                            <option value="">Seçiniz...</option>
+                            <!-- JS ile doldurulacak -->
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Puanınız</label>
+                    <div class="star-rating" id="formStarRating">
+                        <span class="star" data-value="1"><i class="fas fa-star"></i></span>
+                        <span class="star" data-value="2"><i class="fas fa-star"></i></span>
+                        <span class="star" data-value="3"><i class="fas fa-star"></i></span>
+                        <span class="star" data-value="4"><i class="fas fa-star"></i></span>
+                        <span class="star" data-value="5"><i class="fas fa-star"></i></span>
+                    </div>
+                    <input type="hidden" id="formPuan" value="0">
+                </div>
+            </div>
+            
+            <!-- Ek ve Gelişmiş Bilgiler -->
+            <div class="form-section">
+                <h3><i class="fas fa-cog"></i> Ek ve Gelişmiş Bilgiler</h3>
+                <div class="form-group">
+                    <label for="formBaglanti">Harici Bağlantı (URL)</label>
+                    <input type="url" id="formBaglanti" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label for="formHedefTarih">Hedef Tamamlama Tarihi</label>
+                    <input type="date" id="formHedefTarih">
+                </div>
+                <div class="form-group">
+                    <label for="formNotlar">Kişisel Notlar</label>
+                    <textarea id="formNotlar" rows="3"></textarea>
+                </div>
+            </div>
+
+            <!-- Thumbnail -->
+            <div class="form-section">
+                <h3><i class="fas fa-image"></i> Thumbnail</h3>
+                <div class="form-group">
+                    <button type="button" class="btn btn-thumbnail" id="thumbnailButton">
+                        <i class="fas fa-upload"></i> Dosya Seç (Maks 1MB)
+                    </button>
+                    <input type="file" id="formThumbnailInput" accept="image/*" style="display: none;">
+                    <div class="thumbnail-preview" id="thumbnailPreview">
+                        <img id="thumbnailPreviewImage" src="" alt="Önizleme" style="display:none;">
+                        <span id="thumbnailPlaceholder">Önizleme alanı</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Butonlar -->
+            <div class="form-buttons">
+                <!-- Kaydet (submit) -->
+                <button type="submit" class="btn btn-save">
+                    <i class="fas fa-save"></i> Öğeyi Kaydet
+                </button>
+                <!-- Sil (type="button" olmalı) -->
+                <button type="button" class="btn btn-delete" id="deleteButton" style="display: none;">
+                    <i class="fas fa-trash"></i> Sil
+                </button>
+                <!-- İptal (artık bir link) -->
+                <a href="index.html" class="btn btn-cancel" id="cancelButton">
+                    İptal
+                </a>
+            </div>
+        </form>
+    </div>
+    
+    <!-- ======================= -->
+    <!-- ===== ALT NAVİGASYON ==== -->
+    <!-- ======================= -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-list-ul"></i>
+            <span>Liste</span>
+        </a>
+        <a href="form.html" class="nav-item nav-add">
+            <i class="fas fa-plus"></i>
+        </a>
+        <a href="stats.html" class="nav-item">
+            <i class="fas fa-chart-pie"></i>
+            <span>İstatistikler</span>
+        </a>
+    </nav>
+
+    <!-- Paylaşılan JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
+
+
+                      
