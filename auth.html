@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellolist - Giriş</title>
+    
+    <!-- İkonlar ve Fontlar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Paylaşılan Stiller -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+
+    <div class="container">
+        <div class="auth-container">
+            <h1 class="auth-title">Ellolist'e Hoş Geldin</h1>
+            <p class="auth-subtitle">Medya takip listenize erişmek için giriş yapın.</p>
+            
+            <div id="authMessage">
+                <div class="spinner-auth"></div>
+                <p>Giriş yapılıyor, lütfen bekleyin...</p>
+                <p class="auth-note">(Bu, uygulama ortamı tarafından sağlanan kimlik bilgileriyle otomatik olarak gerçekleşir.)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase ve Uygulama Mantığı -->
+    <!-- Bu dosya giriş mantığını yönetecek ve başarılı olunca index.html'e yönlendirecek -->
+    
+    <!-- Gerekli Firebase SDK'ları -->
+    <script type="module">
+        // Bu global değişkenler canvas ortamında sağlanır
+        // Bu değişkenler __firebase_config ve __initial_auth_token
+        // Bunlar olmadan app.js'deki auth mantığı çalışmaz
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        
+        // Gerekli SDK'ları import et
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // Uygulamayı başlat
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // Hata ayıklama loglarını aç
+        setLogLevel('Debug');
+
+        // app.js'in bu değişkenlere erişebilmesi için onları window'a ekle
+        window.firebaseApp = app;
+        window.firebaseAuth = auth;
+        window.firebaseDb = db;
+    </script>
+    
+    <!-- Paylaşılan JavaScript (Giriş mantığını da içerir) -->
+    <!-- type="module" EKLENDİ, ÇÜNKÜ app.js ARTIK IMPORT KULLANIYOR -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
+
+
