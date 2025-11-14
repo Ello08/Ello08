@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ellolist - Ana Liste</title>
+    
+    <!-- İkonlar ve Fontlar -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Paylaşılan Stiller (Mavi Tema) -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ======================= -->
+    <!-- ===== EKRAN 1: LİSTE ==== -->
+    <!-- ======================= -->
+    <div class="container">
+        <header>
+            <h1>Ellolist</h1>
+            <span id="userIdDisplay">Kullanıcı ID: #yükleniyor...</span>
+        </header>
+        
+        <div class="filter-container">
+            <select id="filterKategori" class="filter-select">
+                <option value="all">Tüm Kategoriler</option>
+                <!-- JS ile doldurulacak -->
+            </select>
+            <select id="filterDurum" class="filter-select">
+                <option value="all">Tüm Durumlar</option>
+                <!-- JS ile doldurulacak -->
+            </select>
+            <select id="filterPuan" class="filter-select">
+                <option value="all">Min. Puan</option>
+                <option value="1">1+ Puan</option>
+                <option value="2">2+ Puan</option>
+                <option value="3">3+ Puan</option>
+                <option value="4">4+ Puan</option>
+                <option value="5">5 Puan</option>
+            </select>
+            <select id="filterSiralama" class="filter-select">
+                <option value="tarih-desc">Son Eklenen</option>
+                <option value="baslik-asc">Sıralama (A-Z)</option>
+                <option value="baslik-desc">Sıralama (Z-A)</option>
+                <option value="puan-desc">Puan (Yüksek-Düşük)</option>
+                <option value="puan-asc">Puan (Düşük-Yüksek)</option>
+            </select>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" id="searchBar" placeholder="Başlık, yazar veya türde ara...">
+            <i class="fas fa-search"></i>
+        </div>
+        
+        <div class="media-list" id="mediaListContainer">
+            <!-- JS render alanı -->
+        </div>
+        
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="spinner"></div>
+            <h3>Henüz listenizde bir şey yok!</h3>
+            <p>Başlamak için '+' düğmesine basın.</p>
+        </div>
+    </div>
+
+    <!-- ======================= -->
+    <!-- ===== ALT NAVİGASYON ==== -->
+    <!-- ======================= -->
+    <nav class="bottom-nav">
+        <!-- Bu sayfada olduğumuz için 'active' class'ı burada -->
+        <a href="index.html" class="nav-item active">
+            <i class="fas fa-list-ul"></i>
+            <span>Liste</span>
+        </a>
+        <a href="form.html" class="nav-item nav-add">
+            <i class="fas fa-plus"></i>
+        </a>
+        <a href="stats.html" class="nav-item">
+            <i class="fas fa-chart-pie"></i>
+            <span>İstatistikler</span>
+        </a>
+    </nav>
+
+    <!-- Paylaşılan JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
+
+
