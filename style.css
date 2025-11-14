@@ -1,9 +1,7 @@
-/* --- 1. Global & YENİ Tema (Mavi) --- */
+/* --- 1. Global & Tema --- */
 :root {
-    /* Mor (#BB86FC) yerine Mavi (#3B82F6) tema */
     --primary-color: #3B82F6;
     --primary-variant: #2563EB;
-    --secondary-color: #03DAC6; /* Bu güzel, kalsın */
     --background-color: #121212;
     --surface-color: #1E1E1E;
     --on-surface-color: #E0E0E0;
@@ -11,7 +9,7 @@
     --error-color: #CF6679;
     --success-color: #4CAF50;
     --warning-color: #FFC107;
-    --blue-accent: #2196F3; /* Bu da maviydi, kalsın */
+    --blue-accent: #2196F3;
     --orange-accent: #FF9800;
 }
 
@@ -37,11 +35,10 @@ body {
     max-width: 800px;
     margin: 0 auto;
     padding: 16px;
-    /* Sticky footer için altta boşluk */
     padding-bottom: 90px;
 }
 
-/* --- 3. Yapışkan Alt Navigasyon --- */
+/* --- 2. Alt Navigasyon (Firebase'siz) --- */
 .bottom-nav {
     position: fixed;
     bottom: 0;
@@ -49,14 +46,13 @@ body {
     right: 0;
     background-color: var(--surface-color);
     display: flex;
-    justify-content: space-around;
+    justify-content: space-around; /* 3 öğeyi eşit dağıt */
     align-items: center;
     border-top: 1px solid #333;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
     z-index: 1000;
 }
 
-/* Navigasyon öğeleri artık <a> etiketi */
 .bottom-nav .nav-item {
     background: none;
     border: none;
@@ -69,6 +65,7 @@ body {
     cursor: pointer;
     transition: color 0.2s ease;
     text-decoration: none;
+    /* flex-grow kaldırıldı, space-around halledecek */
 }
 
 .bottom-nav .nav-item i {
@@ -78,12 +75,12 @@ body {
 
 .bottom-nav .nav-item:hover,
 .bottom-nav .nav-item.active {
-    color: var(--primary-color); /* Yeni Mavi Renk */
+    color: var(--primary-color);
 }
 
 .bottom-nav .nav-add {
-    background-color: var(--primary-color); /* Yeni Mavi Renk */
-    color: #FFF; /* Beyaz font daha iyi durur */
+    background-color: var(--primary-color);
+    color: #FFF;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -92,7 +89,7 @@ body {
     align-items: center;
     transform: translateY(-20px);
     border: 4px solid var(--background-color);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); /* Mavi gölge */
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
 .bottom-nav .nav-add i {
@@ -101,23 +98,32 @@ body {
 }
 
 .bottom-nav .nav-add:hover {
-    background-color: var(--primary-variant); /* Koyu Mavi */
+    background-color: var(--primary-variant);
 }
 
-/* --- 4. Ana Liste Ekranı --- */
+
+/* --- 3. Ana Liste Ekranı --- */
+/* HEADER GÜNCELLENDİ (Çıkış Butonu için) */
 header {
     padding: 16px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
 }
 
 header h1 {
-    color: var(--primary-color); /* Yeni Mavi Renk */
+    color: var(--primary-color);
     font-weight: 700;
     font-size: 2.5rem;
+    flex-grow: 1; /* Hızla büyü */
 }
 
 header #userIdDisplay {
     color: var(--on-surface-muted);
     font-size: 0.9rem;
+    flex-shrink: 0; /* Küçülme */
+    text-align: right;
 }
 
 .filter-container {
@@ -127,30 +133,35 @@ header #userIdDisplay {
     margin: 16px 0;
 }
 
+/* DÜZELTME: Arama Çubuğu (Flexbox ile) - Bu senin kodun, zaten doğruydu */
 .search-bar {
     position: relative;
+    display: flex; /* Flex container */
+    align-items: center; /* Dikey ortala */
+    width: 100%;
     margin-bottom: 20px;
 }
 
 .search-bar input {
     width: 100%;
-    /* DÜZELTME: padding-left 40px -> 48px yapıldı */
-    padding: 12px 16px 12px 48px;
+    padding: 12px 16px 12px 48px; /* Sol padding ikon için geniş yer bırakır */
     border-radius: 8px;
     background-color: var(--surface-color);
     border: 1px solid #333;
     color: var(--on-surface-color);
     font-size: 1rem;
+    flex-grow: 1; /* Kapsayıcıyı doldur */
 }
 
 .search-bar i {
-    position: absolute;
-    /* DÜZELTME: left 14px -> 16px yapıldı */
-    left: 16px;
+    position: absolute; /* Kapsayıcıya göre konumlanır */
+    left: 16px; /* Soldan boşluk */
     top: 50%;
     transform: translateY(-50%);
     color: var(--on-surface-muted);
+    z-index: 10; /* Yazının önünde */
 }
+
 
 .media-list {
     margin-top: 16px;
@@ -201,143 +212,127 @@ header #userIdDisplay {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    overflow: hidden;
+    overflow: hidden; 
 }
 
-.media-card .card-header {
+/* style.css içindeki eksik CSS eklendi (Senin kodunda vardı) */
+.card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    gap: 8px;
 }
 
-.media-card .card-header h3 {
-    font-size: 1.2rem;
+.card-header h3 {
+    font-size: 1.15rem;
     font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding-right: 10px;
+    /* max-width: 200px; */ /* Ekran küçüldükçe sorun yaratabilir, flex halleder */
+    flex-grow: 1;
 }
 
 .status-badge {
-    font-size: 0.75rem;
-    font-weight: 700;
+    background-color: var(--blue-accent);
+    color: #FFF;
     padding: 4px 8px;
-    border-radius: 12px;
-    color: #000;
-    flex-shrink: 0;
+    border-radius: 16px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    flex-shrink: 0; /* Küçülmesin */
 }
 
-/* Durum Renkleri */
-.status-badge[data-status="Tamamlandı"] { background-color: var(--success-color); color: white; }
-.status-badge[data-status="İzleniyor"], .status-badge[data-status="Okunuyor"] { background-color: var(--blue-accent); color: white; }
-.status-badge[data-status="Beklemede"], .status-badge[data-status="Planlandı"] { background-color: var(--warning-color); color: #000; }
-.status-badge[data-status="Bırakıldı"] { background-color: var(--error-color); color: white; }
+.status-badge[data-status="Tamamlandı"] { background-color: var(--success-color); }
+.status-badge[data-status="Bırakıldı"] { background-color: var(--error-color); }
+.status-badge[data-status="Beklemede"] { background-color: var(--orange-accent); }
+.status-badge[data-status="Planlandı"] { background-color: #555; }
+/* Diğer durumlar varsayılan mavi (İzleniyor, Okunuyor) */
 
-.media-card .card-meta {
+.card-meta {
     display: flex;
-    gap: 16px;
+    justify-content: space-between;
+    align-items: center;
     font-size: 0.9rem;
     color: var(--on-surface-muted);
 }
 
-.media-card .card-rating .fas.fa-star {
-    color: var(--warning-color);
+.card-author {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* max-width: 150px; */ /* Esnek bırak */
+    padding-right: 10px;
 }
 
-.media-card .progress-info {
-    font-size: 0.85rem;
+.card-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+.card-rating .fa-star {
+    color: var(--warning-color);
+}
+.card-rating .far-star {
     color: var(--on-surface-muted);
-    margin-top: auto; /* Altta kalmasını sağlar */
+}
+
+.progress-info {
+    font-size: 0.8rem;
+    color: var(--on-surface-muted);
 }
 
 .progress-bar-container {
     width: 100%;
-    height: 8px;
+    height: 6px;
     background-color: #333;
-    border-radius: 4px;
+    border-radius: 3px;
     overflow: hidden;
     margin-top: 4px;
 }
 
 .progress-bar {
     height: 100%;
-    background-color: var(--primary-color); /* Yeni Mavi Renk */
-    border-radius: 4px;
-    transition: width 0.3s ease;
+    background-color: var(--primary-color);
+    border-radius: 3px;
 }
 
 .empty-state {
     text-align: center;
-    padding: 60px 20px;
+    padding: 40px 20px;
     color: var(--on-surface-muted);
 }
 
-.empty-state .spinner {
-    width: 60px;
-    height: 60px;
-    border: 5px solid #444;
-    border-top-color: var(--primary-color); /* Yeni Mavi Renk */
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 20px auto;
-}
-
 .empty-state h3 {
-    font-size: 1.2rem;
     color: var(--on-surface-color);
+    margin-top: 16px;
     margin-bottom: 8px;
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
 
-/* --- 5. Form Ekranı --- */
+/* --- 4. Form Ekranı (form.html) --- */
 .form-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 0;
-}
-
-.btn-link {
-    background: none;
-    border: none;
-    color: var(--primary-color); /* Yeni Mavi Renk */
-    font-size: 1rem;
-    cursor: pointer;
-    font-weight: 500;
-    text-decoration: none; /* <a> için eklendi */
-}
-
-.btn-link i {
-    margin-right: 6px;
-}
-
-.appwrite-placeholder {
-    font-size: 0.8rem;
-    color: var(--on-surface-muted);
-}
-
-h2 { /* Genel başlık stili (Form ve İstatistik için) */
     margin-bottom: 24px;
-    font-size: 1.8rem;
 }
 
 .form-section {
-    margin-bottom: 24px;
-}
-
-.form-section h3 {
-    color: var(--primary-color); /* Yeni Mavi Renk */
-    font-size: 1.1rem;
-    font-weight: 700;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #333;
+    background-color: var(--surface-color);
+    border-radius: 12px;
+    padding: 16px;
     margin-bottom: 16px;
 }
 
+.form-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 16px;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 8px;
+}
 .form-section h3 i {
     margin-right: 8px;
 }
@@ -346,31 +341,36 @@ h2 { /* Genel başlık stili (Form ve İstatistik için) */
     margin-bottom: 16px;
 }
 
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.label-with-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .form-group-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     gap: 12px;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--on-surface-muted);
-}
-
 input[type="text"],
 input[type="number"],
 input[type="url"],
 input[type="date"],
-select,
-textarea {
+textarea,
+select {
     width: 100%;
-    padding: 12px;
-    background-color: #2C2C2C;
-    border: 1px solid #444;
+    padding: 12px 14px;
     border-radius: 8px;
+    background-color: var(--background-color);
+    border: 1px solid #333;
     color: var(--on-surface-color);
     font-size: 1rem;
     font-family: 'Inter', sans-serif;
@@ -378,194 +378,250 @@ textarea {
 
 textarea {
     resize: vertical;
-    min-height: 80px;
 }
 
-input[type="date"] {
-    color-scheme: dark;
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
 }
 
 .star-rating {
     display: flex;
     gap: 8px;
-    font-size: 28px;
 }
 
 .star-rating .star {
+    font-size: 24px;
     color: var(--on-surface-muted);
     cursor: pointer;
-    transition: color 0.2s ease, transform 0.2s ease;
+    transition: color 0.2s ease;
 }
-
-.star-rating .star:hover {
-    transform: scale(1.1);
-}
-
+.star-rating .star:hover,
 .star-rating .star.filled {
     color: var(--warning-color);
 }
 
 .thumbnail-preview {
-    width: 100%;
-    height: 150px;
-    background-color: #2C2C2C;
-    border: 2px dashed #444;
+    width: 120px;
+    height: 160px;
+    background-color: var(--background-color);
+    border: 2px dashed #333;
     border-radius: 8px;
+    margin-top: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 12px;
     overflow: hidden;
+    color: var(--on-surface-muted);
 }
-
-.thumbnail-preview #thumbnailPreviewImage {
+.thumbnail-preview img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-}
-
-.thumbnail-preview #thumbnailPlaceholder {
-    color: var(--on-surface-muted);
-    font-style: italic;
+    object-fit: cover;
 }
 
 .form-buttons {
-    margin-top: 32px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
 }
 
-.btn {
-    padding: 14px;
-    font-size: 1rem;
-    font-weight: 700;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-}
-
-/* <a> etiketlerinin de .btn gibi görünmesi için */
-a.btn {
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    line-height: 1.5; /* padding'e uyması için */
-}
-
-
-.btn:hover {
-    opacity: 0.9;
-}
-
-.btn i {
-    margin-right: 8px;
-}
-
+/* Kaydet butonu varsayılan (yeni öğe) olarak tam genişlik */
 .btn-save {
-    background-color: var(--success-color);
-    color: white;
-    grid-column: 1 / -1; /* Tam genişlik */
+    grid-column: 1 / -1;
 }
-
 .btn-delete {
-    background-color: var(--error-color);
-    color: white;
+    /* Varsayılan olarak gizli (JS ile gösterilir) */
 }
-
 .btn-cancel {
-    background-color: #444;
-    color: var(--on-surface-color);
+    grid-column: 1 / -1; /* Sil butonu yokken tam genişlik */
 }
 
-.btn-thumbnail {
-    background-color: var(--primary-color); /* Yeni Mavi Renk */
-    color: #FFF; /* Beyaz font */
+/* Düzenleme modunda (sil butonu varken) */
+.form-buttons.edit-mode .btn-save {
+    grid-column: 1 / -1; /* Kaydet hala tam genişlik */
+}
+.form-buttons.edit-mode .btn-delete {
+    grid-column: 1 / span 1; /* Sil solda */
+}
+.form-buttons.edit-mode .btn-cancel {
+    grid-column: 2 / span 1; /* İptal sağda */
 }
 
-/* --- 6. İstatistik Ekranı --- */
+
+/* --- 5. İstatistik Ekranı (stats.html) --- */
 .stats-section {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
 }
-
 .stats-section h3 {
-    font-size: 1.2rem;
-    color: var(--on-surface-muted);
-    font-weight: 500;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+    color: var(--on-surface-color);
 }
 
 .stats-grid {
     display: grid;
     gap: 12px;
 }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+.grid-4 { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
 
-.stats-grid.grid-4 {
-    grid-template-columns: repeat(2, 1fr);
-}
-
-.stats-grid.grid-3 {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+@media (max-width: 480px) {
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
 
 .stat-card {
     background-color: var(--surface-color);
     border-radius: 8px;
     padding: 16px;
-    border-left: 4px solid var(--surface-color); /* Varsayılan */
+    text-align: center;
 }
-
 .stat-card h4 {
     font-size: 0.9rem;
     color: var(--on-surface-muted);
     font-weight: 500;
     margin-bottom: 8px;
 }
-
 .stat-card span {
     font-size: 2rem;
     font-weight: 700;
     color: var(--on-surface-color);
 }
 
-/* İstatistik Kartı Vurguları */
-.stat-card.accent-purple { border-left-color: var(--primary-color); } /* Bu artık mavi */
-.stat-card.accent-green { border-left-color: var(--success-color); }
-.stat-card.accent-yellow { border-left-color: var(--warning-color); }
-.stat-card.accent-blue { border-left-color: var(--blue-accent); }
-.stat-card.accent-orange { border-left-color: var(--orange-accent); }
+.stat-card.accent-green span { color: var(--success-color); }
+.stat-card.accent-purple span { color: #9C27B0; }
+.stat-card.accent-blue span { color: var(--blue-accent); }
+.stat-card.accent-orange span { color: var(--orange-accent); }
 
-/* Geri dön butonu (stats) */
-a.btn#navBackFromStats {
-    background-color: #444;
-    color: var(--on-surface-color);
-    width: 100%;
-    margin-top: 16px;
+/* --- 6. Auth Ekranı (auth.html) --- */
+.auth-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
-/* Tablet ve üzeri için iyileştirmeler */
-@media (min-width: 600px) {
-    .filter-container {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    .stats-grid.grid-4 {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    /* Form butonlarını düzenle */
-    .form-buttons {
-         /* Kaydet (tam genişlik), Sil (1/2), İptal (1/2) */
-        grid-template-columns: 1fr 1fr;
-    }
-    .btn-save {
-        grid-column: 1 / -1; /* Tam genişlikte kalsın */
-    }
-    .btn-delete {
-        grid-column: 1 / 2;
-    }
-    .btn-cancel {
-        grid-column: 2 / 3;
-    }
-                                                               }
+.auth-container {
+    text-align: center;
+}
+
+.auth-title {
+    color: var(--primary-color);
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.auth-subtitle {
+    font-size: 1.1rem;
+    color: var(--on-surface-muted);
+    margin-bottom: 32px;
+}
+#authMessage p {
+    font-size: 1rem;
+    color: var(--on-surface-color);
+}
+#authMessage .auth-note {
+    font-size: 0.9rem;
+    color: var(--on-surface-muted);
+    margin-top: 12px;
+}
+.spinner-auth {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #444;
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px auto;
+}
+
+/* --- 7. Yardımcı Sınıflar & Butonlar --- */
+.btn, .btn-link, .filter-select, .btn-thumbnail, .btn-ai, .btn-logout {
+    display: inline-block;
+    text-decoration: none;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.btn {
+    background-color: var(--primary-color);
+    color: #FFF;
+}
+.btn:hover { background-color: var(--primary-variant); }
+
+.btn-save { background-color: var(--success-color); }
+.btn-save:hover { background-color: #388E3C; }
+
+.btn-delete { background-color: var(--error-color); }
+.btn-delete:hover { background-color: #B00020; }
+
+.btn-cancel { background-color: #444; color: var(--on-surface-color); }
+.btn-cancel:hover { background-color: #555; }
+
+.btn-link {
+    background: none;
+    color: var(--primary-color);
+    padding: 0;
+}
+.btn-link i { margin-right: 6px; }
+
+.btn-thumbnail {
+    background-color: var(--surface-color);
+    color: var(--on-surface-color);
+    border: 1px solid #333;
+    width: 100%;
+}
+
+.btn-ai {
+    background: linear-gradient(90deg, #673AB7, #E91E63);
+    color: #FFF;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+}
+.btn-ai:disabled {
+    opacity: 0.7;
+}
+
+.filter-select {
+    background-color: var(--surface-color);
+    color: var(--on-surface-color);
+    border: 1px solid #333;
+    width: 100%;
+}
+
+/* ÇIKIŞ BUTONU STİLİ EKLENDİ */
+.btn-logout {
+    background: none;
+    color: var(--on-surface-muted);
+    font-size: 22px;
+    padding: 8px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    line-height: 1;
+}
+.btn-logout:hover {
+    color: var(--error-color);
+    background-color: var(--surface-color);
+}
+
+
+/* Spinner (auth.html'den alındı) */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #555;
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+    }           
