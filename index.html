@@ -8,7 +8,7 @@
     <!-- İkonlar ve Fontlar -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Paylaşılan Stiller -->
@@ -18,14 +18,20 @@
 
     <!-- Ana İçerik -->
     <div class="container">
+        <!-- HEADER DÜZELTİLDİ (Flexbox için) -->
         <header>
             <h1>Ellolist</h1>
+            <!-- Kullanıcı ID'si localStorage'dan gelecek -->
             <span id="userIdDisplay">Kullanıcı ID: #yükleniyor...</span>
+            
+            <!-- ÇIKIŞ BUTONU EKLENDİ (app.js'in aradığı) -->
+            <button class="btn-logout" id="logoutButton" title="Çıkış Yap">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
         </header>
         
         <div class="filter-container">
             <select id="filterKategori" class="filter-select">
-                <!-- GÜNCELLEME: Etiket değişti -->
                 <option value="all">Tüm Ana Kategoriler</option>
                 <!-- JS ile doldurulacak -->
             </select>
@@ -50,8 +56,8 @@
             </select>
         </div>
         
+        <!-- Arama çubuğu (style.css'de düzeltildi) -->
         <div class="search-bar">
-            <!-- GÜNCELLEME: Placeholder değişti -->
             <input type="text" id="searchBar" placeholder="Başlık, yazar veya etikette ara...">
             <i class="fas fa-search"></i>
         </div>
@@ -69,7 +75,6 @@
 
     <!-- Alt Navigasyon -->
     <nav class="bottom-nav">
-        <!-- 'active' sınıfı bu sayfanın aktif olduğunu belirtir -->
         <a href="index.html" class="nav-item active">
             <i class="fas fa-list-ul"></i>
             <span>Liste</span>
@@ -83,8 +88,8 @@
         </a>
     </nav>
 
-    <!-- Paylaşılan JavaScript -->
-    <script src="app.js"></script>
+    <!-- Paylaşılan JavaScript (type="module" EKLENDİ) -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>
 
