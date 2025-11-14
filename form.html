@@ -6,10 +6,9 @@
     <title>Ellolist - Öğe Ekle/Düzenle</title>
     
     <!-- İkonlar ve Fontlar -->
-    <!-- DÜZELTME: 'https.cdnjs...' -> 'https://cdnjs...' olarak düzeltildi -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Paylaşılan Stiller -->
@@ -20,9 +19,8 @@
     <!-- Form İçeriği -->
     <div class="container">
         <div class="form-header">
-            <!-- Geri dön linki -->
             <a href="index.html" class="btn-link"><i class="fas fa-arrow-left"></i> Listeye Dön</a>
-            <span class="appwrite-placeholder">Appwrite Bağlantısı Kuruluyor...</span>
+            <!-- Çıkış butonu buraya da eklenebilir ama kafa karıştırır, index'te kalsın -->
         </div>
         
         <h2 id="formTitle">Yeni Öğe Ekle</h2>
@@ -41,7 +39,6 @@
                 </div>
                 <div class="form-group-row">
                     <div class="form-group">
-                        <!-- GÜNCELLEME: Etiket değişti -->
                         <label for="formKategori">Ana Kategori (Zorunlu)</label>
                         <select id="formKategori" required>
                             <option value="">Seçiniz...</option>
@@ -61,12 +58,17 @@
                     <input type="text" id="formYazar" placeholder="Örn: J.R.R. Tolkien">
                 </div>
                 <div class="form-group">
-                    <!-- GÜNCELLEME: Etiket ve placeholder değişti -->
                     <label for="formTur">Etiketler / Alt Kategoriler</label>
-                    <input type="text" id="formTur" placeholder="Örn: Fantastik, Shounen, Polisiye (Virgülle ayırın)">
+                    <input type="text" id="formTur" placeholder="Örn: Fantastik, Shounen (Virgülle ayırın)">
                 </div>
                 <div class="form-group">
-                    <label for="formAciklama">Açıklama/Özet</label>
+                    <label for="formAciklama" class="label-with-button">
+                        Açıklama/Özet
+                        <!-- YAPAY ZEKA BUTONU (Firebase'siz) -->
+                        <button type="button" class="btn-ai" id="aiGenerateButton" title="AI ile Özet Oluştur (Başlığı girin)">
+                            <i class="fas fa-sparkles"></i> AI ile Oluştur
+                        </button>
+                    </label>
                     <textarea id="formAciklama" rows="3"></textarea>
                 </div>
             </div>
@@ -86,7 +88,6 @@
                     <div class="form-group">
                         <label for="formIlerlemeBirimi">İlerleme Birimi</label>
                         <select id="formIlerlemeBirimi">
-                            <!-- DÜZELTME: Bu 'Seçiniz' satırı kritik öneme sahip, JS'nin çökmesini engelliyor -->
                             <option value="">Seçiniz...</option>
                             <!-- JS ile doldurulacak -->
                         </select>
@@ -138,16 +139,13 @@
             </div>
             
             <!-- Butonlar -->
-            <div class="form-buttons">
-                <!-- Kaydet Butonu -->
+            <div class="form-buttons" id="formButtonsContainer">
                 <button type="submit" class="btn btn-save">
                     <i class="fas fa-save"></i> Öğeyi Kaydet
                 </button>
-                <!-- Sil Butonu (sadece düzenlemede görünür) -->
                 <button type="button" class="btn btn-delete" id="deleteButton" style="display: none;">
                     <i class="fas fa-trash"></i> Sil
                 </button>
-                <!-- İptal Linki -->
                 <a href="index.html" class="btn btn-cancel" id="cancelButton">
                     İptal
                 </a>
@@ -170,9 +168,10 @@
         </a>
     </nav>
 
-    <!-- Paylaşılan JavaScript -->
-    <script src="app.js"></script>
+    <!-- Paylaşılan JavaScript (type="module" EKLENDİ) -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>
 
 
+ 
