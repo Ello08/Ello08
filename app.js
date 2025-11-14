@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let mediaList = [];
     let currentUserId = '';
 
-    const KATEGORILER = [
+    // GÜNCELLEME: "KATEGORILER" ana kategori oldu
+    const ANA_KATEGORILER = [
         "Kitap", "Roman", "Webtoon", "Manga", "Film", "Dizi", "Anime", "Müzik", "Podcast", "Diğer"
     ];
 
@@ -36,22 +37,25 @@ document.addEventListener('DOMContentLoaded', () => {
         return uid;
     }
 
-    // Dropdown doldurma (ortak)
+    /**
+     * DÜZELTME: Bu fonksiyon JS çökmesini engellemek için yeniden yazıldı.
+     * Bir select elementini, ilk seçeneğini (örn: "Seçiniz...") koruyarak doldurur.
+     */
     function populateDropdown(selectElement, options) {
         if (!selectElement) return;
         
-        // İlk seçeneği (Seçiniz... veya Tüm...) koru
-        const firstOption = selectElement.options[0];
-        selectElement.innerHTML = '';
-        selectElement.appendChild(firstOption);
+        // İlk seçeneği (Seçiniz... veya Tüm...) HTML olarak sakla
+        const firstOptionHTML = selectElement.options[0] ? selectElement.options[0].outerHTML : '';
         
+        selectElement.innerHTML = firstOptionHTML; // Önce sadece ilk seçeneği ayarla
+        
+        // Sonra kalan seçenekleri ekle
         options.forEach(opt => {
             selectElement.innerHTML += `<option value="${opt}">${opt}</option>`;
         });
     }
 
     // --- 2. SAYFA TESPİTİ VE ÖZEL LOGIC ---
-    // Önce veriyi yükle, sonra hangi sayfada olduğumuza bakalım
     loadList(); 
     const pageName = window.location.pathname.split('/').pop() || 'index.html';
 
@@ -60,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- ======================= ---
     if (pageName === 'index.html' || pageName === '') {
         
-        // DOM Elemanları (index.html'e özel)
         const mediaListContainer = document.getElementById('mediaListContainer');
         const emptyState = document.getElementById('emptyState');
         const userIdDisplay = document.getElementById('userIdDisplay');
@@ -70,40 +73,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const filterSiralama = document.getElementById('filterSiralama');
         const searchBar = document.getElementById('searchBar');
 
-        // ID'yi göster
         const uid = getOrCreateUserId();
         if (userIdDisplay) {
             userIdDisplay.textContent = `Kullanıcı ID: #${uid.substring(9, 18)}`;
         }
 
-        // Dropdown'ları doldur
-        populateDropdown(filterKategori, KATEGORILER);
+        // Dropdown'ları doldur (Ana Kategoriler ile)
+        populateDropdown(filterKategori, ANA_KATEGORILER);
         populateDropdown(filterDurum, DURUMLAR);
         
-        // --- Liste Fonksiyonları (index.html'e özel) ---
-
         function renderList() {
-            // Filtre değerlerini al
             const kategori = filterKategori.value;
             const durum = filterDurum.value;
             const puan = parseInt(filterPuan.value) || 0;
             const siralama = filterSiralama.value;
             const arama = searchBar.value.toLowerCase().trim();
 
-            // Filtrele
             let filteredList = mediaList.filter(item => {
                 const kategoriMatch = (kategori === 'all' || item.kategori === kategori);
                 const durumMatch = (durum === 'all' || item.durum === durum);
                 const puanMatch = (puan === 0 || (parseInt(item.puan) || 0) >= puan);
+                
+                // GÜNCELLEME: Arama artık "tur" (etiketler) alanını da kontrol ediyor
                 const aramaMatch = (arama === '' ||
                     item.baslik.toLowerCase().includes(arama) ||
                     (item.yazar && item.yazar.toLowerCase().includes(arama)) ||
-                    (item.tur && item.tur.toLowerCase().includes(arama))
+                    (item.tur && item.tur.toLowerCase().includes(arama)) // 'tur' alanı etiketler oldu
                 );
                 return kategoriMatch && durumMatch && puanMatch && aramaMatch;
             });
 
-            // Sırala
+            // Sıralama (değişiklik yok)
             switch (siralama) {
                 case 'baslik-asc':
                     filteredList.sort((a, b) => a.baslik.localeCompare(b.baslik, 'tr'));
@@ -119,21 +119,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     break;
                 case 'tarih-desc':
                 default:
-                    filteredList.sort((a, b) => (b.id || 0) - (a.id || 0)); // ID (tarih) bazlı
+                    filteredList.sort((a, b) => (b.id || 0) - (a.id || 0));
                     break;
             }
 
-            // Boş durum kontrolü
             if (filteredList.length === 0) {
                 emptyState.style.display = 'block';
                 mediaListContainer.innerHTML = '';
             } else {
                 emptyState.style.display = 'none';
-                // Kartları oluştur
                 mediaListContainer.innerHTML = filteredList.map(item => createMediaCardHTML(item)).join('');
             }
             
-            // Dinamik olarak oluşturulan kartlara event listener ekle
             bindDynamicCardListeners();
         }
         
@@ -146,11 +143,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (toplam > 0) {
                 progressPercent = (mevcut / toplam) * 100;
             }
-            
             if (toplam === 0) {
                 progressText = item.durum === 'Tamamlandı' ? 'Tamamlandı' : 'İlerleme girilmedi';
             }
-            
             if (item.durum === 'Tamamlandı') {
                 progressPercent = 100;
             }
@@ -197,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
         function handleCardClick(event) {
             const card = event.currentTarget;
             const itemId = card.dataset.id;
-            // Düzenleme sayfasına ID ile yönlendir
             window.location.href = `form.html?id=${itemId}`;
         }
 
@@ -208,7 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
         filterSiralama.addEventListener('change', renderList);
         searchBar.addEventListener('input', renderList);
 
-        // Başlat (index.html'e özel)
         renderList();
     }
 
@@ -217,7 +210,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- ======================= ---
     else if (pageName === 'form.html') {
         
-        // DOM Elemanları (form.html'e özel)
         const mediaForm = document.getElementById('mediaForm');
         const formTitle = document.getElementById('formTitle');
         const formItemId = document.getElementById('formItemId');
@@ -225,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const formKategori = document.getElementById('formKategori');
         const formDurum = document.getElementById('formDurum');
         const formYazar = document.getElementById('formYazar');
-        const formTur = document.getElementById('formTur');
+        const formTur = document.getElementById('formTur'); // Bu artık etiketler
         const formAciklama = document.getElementById('formAciklama');
         const formMevcutIlerleme = document.getElementById('formMevcutIlerleme');
         const formToplamDeger = document.getElementById('formToplamDeger');
@@ -242,9 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const thumbnailPreviewImage = document.getElementById('thumbnailPreviewImage');
         const thumbnailPlaceholder = document.getElementById('thumbnailPlaceholder');
         const deleteButton = document.getElementById('deleteButton');
-        const cancelButton = document.getElementById('cancelButton'); // Bu artık bir <a>
-
-        // --- Form Fonksiyonları (form.html'e özel) ---
+        const cancelButton = document.getElementById('cancelButton');
 
         function updateStarRating(value) {
             const stars = formStarRating.querySelectorAll('.star');
@@ -269,10 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
             formTitle.textContent = 'Yeni Öğe Ekle';
             
             deleteButton.style.display = 'none';
-            // Silme butonu gizliyken İptal butonunu ayarla
             cancelButton.style.gridColumn = '1 / -1'; // Tam genişlik
             
-            // Thumbnail önizlemesini sıfırla
             thumbnailPreviewImage.style.display = 'none';
             thumbnailPreviewImage.src = '';
             thumbnailPlaceholder.style.display = 'block';
@@ -282,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
              const item = mediaList.find(i => i.id === itemId);
              if (!item) {
                 console.error("Öğe bulunamadı!");
-                window.location.href = 'index.html'; // Bulamazsa anasayfaya dön
+                window.location.href = 'index.html';
                 return;
              }
              
@@ -292,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
              formKategori.value = item.kategori;
              formDurum.value = item.durum;
              formYazar.value = item.yazar || '';
-             formTur.value = item.tur || '';
+             formTur.value = item.tur || ''; // Etiketler
              formAciklama.value = item.aciklama || '';
              formMevcutIlerleme.value = item.mevcutIlerleme || 0;
              formToplamDeger.value = item.toplamDeger || 0;
@@ -311,7 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
                  thumbnailPlaceholder.style.display = 'none';
              }
              
-             // Silme butonunu göster ve grid'i ayarla
              deleteButton.style.display = 'block';
              cancelButton.style.gridColumn = 'auto'; // Normal genişlik
         }
@@ -330,10 +317,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const itemId = formItemId.value;
             const itemData = {
                 baslik: formBaslik.value,
-                kategori: formKategori.value,
+                kategori: formKategori.value, // Ana Kategori
                 durum: formDurum.value,
                 yazar: formYazar.value,
-                tur: formTur.value,
+                tur: formTur.value, // Etiketler
                 aciklama: formAciklama.value,
                 mevcutIlerleme: formMevcutIlerleme.value,
                 toplamDeger: formToplamDeger.value,
@@ -346,18 +333,15 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             if (itemId) {
-                // Düzenle
                 mediaList = mediaList.map(item => 
-                    item.id === itemId ? { ...item, ...itemData, id: itemId } : item // id'nin korunmasını sağla
+                    item.id === itemId ? { ...item, ...itemData, id: itemId } : item
                 );
             } else {
-                // Yeni Ekle
                 itemData.id = Date.now().toString();
                 mediaList.push(itemData);
             }
             
             saveList();
-            // Kayıttan sonra anasayfaya dön
             window.location.href = 'index.html';
         }
         
@@ -365,17 +349,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const itemId = formItemId.value;
             if (!itemId) return;
             
-            // Gerçek uygulamada burada bir onay (confirm) gerekir
-            // if (confirm("Bu öğeyi silmek istediğinize emin misiniz?")) { ... }
-            
+            // Gerçek bir uygulamada burada onay gerekir, ancak prompt/alert yasak.
             mediaList = mediaList.filter(item => item.id !== itemId);
             saveList();
-            // Sildikten sonra anasayfaya dön
             window.location.href = 'index.html';
         }
 
-        // --- Thumbnail Fonksiyonları (form.html'e özel) ---
-        
         thumbnailButton.addEventListener('click', () => {
             formThumbnailInput.click();
         });
@@ -401,7 +380,6 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.readAsDataURL(file);
         });
         
-        // --- Event Listeners (form.html'e özel) ---
         mediaForm.addEventListener('submit', handleSave);
         deleteButton.addEventListener('click', handleDelete);
         formStarRating.addEventListener('click', (e) => {
@@ -413,12 +391,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Başlatma (form.html'e özel) ---
         
-        // Dropdown'ları doldur
-        populateDropdown(formKategori, KATEGORILER);
+        // Dropdown'ları doldur (Ana Kategoriler ile)
+        populateDropdown(formKategori, ANA_KATEGORILER);
         populateDropdown(formDurum, DURUMLAR);
         populateDropdown(formIlerlemeBirimi, BIRIMLER);
         
-        // URL'den ID'yi kontrol et (Düzenleme modu için)
         const urlParams = new URLSearchParams(window.location.search);
         const editId = urlParams.get('id');
         
@@ -434,21 +411,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- ======================= ---
     else if (pageName === 'stats.html') {
         
-        // --- Stats Fonksiyonu (stats.html'e özel) ---
-        
         function renderStats() {
             const total = mediaList.length;
             const tamamlanan = mediaList.filter(i => i.durum === 'Tamamlandı').length;
             const izleniyor = mediaList.filter(i => i.durum === 'İzleniyor').length;
             const okunuyor = mediaList.filter(i => i.durum === 'Okunuyor').length;
             
-            // ID'lerin varlığını kontrol et
             document.getElementById('statGenelToplam').textContent = total;
             document.getElementById('statToplamTamamlanan').textContent = tamamlanan;
             document.getElementById('statToplamIzleniyor').textContent = izleniyor;
             document.getElementById('statToplamOkunuyor').textContent = okunuyor;
             
-            // Nicel İlerleme
             const toplamSayfa = mediaList
                 .filter(i => (i.kategori === 'Kitap' || i.kategori === 'Roman') && i.ilerlemeBirimi === 'Sayfa')
                 .reduce((sum, i) => sum + (parseInt(i.mevcutIlerleme) || 0), 0);
@@ -468,4 +441,19 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('statToplamSayfa').textContent = toplamSayfa;
             document.getElementById('statToplamWebMan').textContent = toplamWebMan;
             document.getElementById('statToplamDiziAnime').textContent = toplamDiziAnime;
-            document.getEleme
+            document.getElementById('statToplamFilm').textContent = toplamFilm;
+            
+            // İstatistikleri Ana Kategorilere göre hesapla
+            ANA_KATEGORILER.forEach(cat => {
+                const count = mediaList.filter(i => i.kategori === cat && i.durum === 'Tamamlandı').length;
+                const elId = `statComp${cat.replace(/ /g, '')}`; // Örn: statCompWebtoon
+                const el = document.getElementById(elId);
+                if (el) {
+                    el.textContent = count;
+                }
+            });
+        }
+
+        renderStats();
+    }
+});
