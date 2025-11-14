@@ -6,10 +6,9 @@
     <title>Ellolist - İstatistikler</title>
     
     <!-- İkonlar ve Fontlar -->
-    <!-- DÜZELTME: 'https.cdnjs...' -> 'https://cdnjs...' olarak düzeltildi -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Paylaşılan Stiller -->
@@ -25,7 +24,7 @@
         <div class="stats-section">
             <h3>Genel Özet</h3>
             <div class="stats-grid grid-4">
-                <div class="stat-card accent-purple"> <!-- Bu mavi olacak -->
+                <div class="stat-card accent-purple">
                     <h4>Genel Toplam Öğe</h4>
                     <span id="statGenelToplam">0</span>
                 </div>
@@ -78,12 +77,11 @@
                 <div class="stat-card accent-green"><h4>Tamamlanan Film</h4><span id="statCompFilm">0</span></div>
                 <div class="stat-card accent-green"><h4>Tamamlanan Dizi</h4><span id="statCompDizi">0</span></div>
                 <div class="stat-card accent-green"><h4>Tamamlanan Anime</h4><span id="statCompAnime">0</span></div>
-                <div class="stat-card accent-green"><h4>Dinlenen Albüm</h4><span id="statCompMuzik">0</span></div>
+                <div class="stat-card accent-green"><h4>Tamamlanan Müzik</h4><span id="statCompMuzik">0</span></div>
                 <div class="stat-card accent-green"><h4>Tamamlanan Podcast</h4><span id="statCompPodcast">0</span></div>
             </div>
         </div>
 
-        <!-- Geri Dön Linki -->
         <a href="index.html" class="btn" id="navBackFromStats"><i class="fas fa-arrow-left"></i> Geri Dön</a>
     </div>
 
@@ -96,16 +94,16 @@
         <a href="form.html" class="nav-item nav-add">
             <i class="fas fa-plus"></i>
         </a>
-        <!-- 'active' sınıfı bu sayfanın aktif olduğunu belirtir -->
         <a href="stats.html" class="nav-item active">
             <i class="fas fa-chart-pie"></i>
             <span>İstatistikler</span>
         </a>
     </nav>
     
-    <!-- Paylaşılan JavaScript -->
-    <script src="app.js"></script>
+    <!-- Paylaşılan JavaScript (type="module" EKLENDİ) -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>
 
 
+ 
