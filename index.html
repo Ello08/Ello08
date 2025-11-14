@@ -11,14 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <!-- Paylaşılan Stiller (Mavi Tema) -->
+    <!-- Paylaşılan Stiller -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ======================= -->
-    <!-- ===== EKRAN 1: LİSTE ==== -->
-    <!-- ======================= -->
+    <!-- Ana İçerik -->
     <div class="container">
         <header>
             <h1>Ellolist</h1>
@@ -27,7 +25,8 @@
         
         <div class="filter-container">
             <select id="filterKategori" class="filter-select">
-                <option value="all">Tüm Kategoriler</option>
+                <!-- GÜNCELLEME: Etiket değişti -->
+                <option value="all">Tüm Ana Kategoriler</option>
                 <!-- JS ile doldurulacak -->
             </select>
             <select id="filterDurum" class="filter-select">
@@ -52,7 +51,8 @@
         </div>
         
         <div class="search-bar">
-            <input type="text" id="searchBar" placeholder="Başlık, yazar veya türde ara...">
+            <!-- GÜNCELLEME: Placeholder değişti -->
+            <input type="text" id="searchBar" placeholder="Başlık, yazar veya etikette ara...">
             <i class="fas fa-search"></i>
         </div>
         
@@ -67,11 +67,9 @@
         </div>
     </div>
 
-    <!-- ======================= -->
-    <!-- ===== ALT NAVİGASYON ==== -->
-    <!-- ======================= -->
+    <!-- Alt Navigasyon -->
     <nav class="bottom-nav">
-        <!-- Bu sayfada olduğumuz için 'active' class'ı burada -->
+        <!-- 'active' sınıfı bu sayfanın aktif olduğunu belirtir -->
         <a href="index.html" class="nav-item active">
             <i class="fas fa-list-ul"></i>
             <span>Liste</span>
